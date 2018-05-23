@@ -1,0 +1,111 @@
+<!doctype html>
+
+<style>
+  /* Basic styles */
+  body {
+    padding: 1vw 2vw;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    text-align: center;
+  }
+
+  img {
+    width: 300px;
+  }
+
+  a {
+    color: #000;
+    font-weight: 600;
+  }
+
+  /* Example: Lazy Lightense */
+  .mona-lazy {
+    filter: blur(16px);
+    transform: scale(1.2);
+  }
+
+  .mona-lazy-wrap {
+    position: relative;
+    width: 300px;
+    height: 115px;
+    margin: 0 auto;
+  }
+
+  .mona-lazy-thumb {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+
+  .mona-lazy-large {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  .mona-lazy-wrap.on .mona-lazy-thumb {
+    opacity: 0;
+  }
+
+  .mona-lazy-wrap.on .mona-lazy-large {
+    opacity: 1;
+  }
+</style>
+
+<p><a href="http://yellowdi.github.io/work/mona-images/" target="_blank">Mona.js</a> by <a href="http://yellowdi.github.io/" target="_blank">YellowDi</a></p>
+
+<p><img src="http://7xp63o.com1.z0.glb.clouddn.com/elenore-bg.png"></p>
+
+<p><img src="http://7xp63o.com1.z0.glb.clouddn.com/elenore-icon-outlined.png" data-mona-background="rgba(253, 223, 124, .5)"></p>
+
+<p><img src="http://7xp63o.com1.z0.glb.clouddn.com/elenore-logo.png" class="no-mona"></p>
+
+<p><img src="http://7xp63o.com1.z0.glb.clouddn.com/alexandr-bormotin-618344-unsplash.jpg" data-mona-padding="0"></p>
+
+<p><img src="http://7xp63o.com1.z0.glb.clouddn.com/earth-608344-unsplash.jpg" data-original="http://7xp63o.com1.z0.glb.clouddn.com/earth-608344-unsplash.jpg" class="mona-lazy"></p>
+
+<script src="mona.min.js"></script>
+
+<script>
+  // Init Mona.js
+  window.addEventListener('load', function () {
+    Mona('img:not(.no-mona),.mona');
+  }, false);
+
+  // Example: Lazy Mona
+  document.addEventListener('DOMContentLoaded', function (e) {
+    function createDom (type, cssClass) {
+      var div = document.createElement(type);
+      div.className = cssClass;
+      return div;
+    }
+
+    var thumb = document.querySelector('.mona-lazy');
+    var original = new Image();
+
+    // Init wrapper
+    var wrap = createDom('div', 'mona-lazy-wrap');
+    thumb.parentNode.insertBefore(wrap, thumb);
+    wrap.appendChild(thumb);
+
+    // Wrap thumbnail
+    var thumbWrap = createDom('div', 'mona-lazy-thumb');
+    thumbWrap.appendChild(thumb);
+    wrap.appendChild(thumbWrap);
+
+    // Wrap original
+    var originalWrap = createDom('div', 'mona-lazy-large');
+    original.src = thumb.dataset.original;
+    originalWrap.appendChild(original);
+    wrap.appendChild(originalWrap);
+
+    // Load original image
+    original.addEventListener('load', function () {
+      wrap.classList.add('on');
+    }, false);
+  });
+</script>
